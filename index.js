@@ -1,13 +1,17 @@
-const express = require('express');
-const app = express();
+const Koa = require('koa');
+const Router = require('koa-router');
 
-// Ruta básica para la página principal
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+const app = new Koa();
+const router = new Router();
+const sum = require('./sum');
+
+router.get('/add/:a/:b', (ctx, next) => {
+  const result = sum(parseFloat(ctx.params.a), parseFloat(ctx.params.b));
+  return ctx.body = { result };
 });
 
-// Puerto en el que escucha la app
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`App running on port ${PORT}`);
-});
+app
+  .use(router.routes())
+  .use(router.allowedMethods());
+
+app.listen(process.env.PORT || 3000);
