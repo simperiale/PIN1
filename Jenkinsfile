@@ -31,13 +31,13 @@ pipeline {
         '''
       }
     }
-    
+
     stage('Run application') {
       steps {
         sh '''
         docker stop testapp-container || true
         docker rm testapp-container || true
-        docker run -d --name testapp-container -p 8081:80 127.0.0.1:5000/mguazzardo/testapp
+        docker run -d --name testapp-container -p 8081:3000 127.0.0.1:5000/mguazzardo/testapp
         '''
       }
     }
